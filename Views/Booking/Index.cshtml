@@ -1,0 +1,56 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model IEnumerable<PHONGTROOA.Models.Booking>
+<div class="container mt-4 py-5">
+
+<h2>Quản lý đặt phòng</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Tên phòng</th>
+            <th>Ngày đặt</th>
+            <th>Trạng thái</th>
+            <th>Hành động</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+
+                <td>@item.Phong?.TenPhong</td>
+
+                <td>@item.BookingDate</td>
+
+                <td>@item.Status</td>
+
+                <td>
+
+                    <a asp-action="Approve"
+                           asp-route-id="@item.Id"
+                           class="btn btn-success">
+                        Duyệt
+                    </a>
+
+                    <a asp-action="Reject"
+                           asp-route-id="@item.Id"
+                           class="btn btn-danger">
+                        Từ chối
+                    </a>
+
+                </td>
+
+            </tr>
+        }
+
+    </tbody>
+</table>
+</div>

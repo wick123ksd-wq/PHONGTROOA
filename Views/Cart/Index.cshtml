@@ -1,0 +1,68 @@
+﻿@model PHONGTROOA.Models.Cart
+<div class="container mt-4 py-5">
+
+
+<h2>🛒 Giỏ hàng</h2>
+
+@if (Model == null || Model.Items.Count == 0)
+{
+    <p>Giỏ hàng trống</p>
+}
+else
+{
+    decimal total = 0;
+
+    <table class="table">
+        <tr>
+            <th>Phòng</th>
+            <th>Giá</th>
+            <th>Tháng</th>
+            <th>Tổng</th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model.Items)
+        {
+            var price = item.Phong?.GiaThue ?? 0;
+            var money = price * item.Quantity;
+
+            total += money;
+
+            <tr>
+                <td>@item.Phong?.TenPhong</td>
+                <td>@price.ToString("N0") đ</td>
+                <td>@item.Quantity</td>
+                <td>@money.ToString("N0") đ</td>
+                <td>
+                    <a asp-action="Remove"
+                           asp-route-id="@item.Id"
+                           class="btn btn-danger">
+                        Xóa
+                    </a>
+                </td>
+            </tr>
+        }
+    </table>
+
+    <h4 class="text-danger">
+        Tổng tiền: @total.ToString("N0") đ
+    </h4>
+        <a asp-controller="Checkout"
+               asp-action="Index"
+               class="btn btn-success">
+            Thanh toán
+        </a>
+}
+</div>
+@if (TempData["Error"] != null)
+{
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: '❌ Booking Failed',
+            text: '@TempData["Error"]',
+            confirmButtonText: 'OK',
+            confirmButtonColor: '#d33'
+        });
+    </script>
+}

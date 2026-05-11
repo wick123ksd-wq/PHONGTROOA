@@ -1,0 +1,52 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model PHONGTROOA.Models.Phong
+<br />
+<br />
+<div class="container mt-4 py-5">
+    <h2>@Model.TenPhong</h2>
+
+    <div class="card shadow p-3">
+
+        @if (!string.IsNullOrEmpty(Model.HinhAnh))
+        {
+            <div class="text-center mb-4">
+
+                <img src="@Url.Content(Model.HinhAnh)"
+                     class="rounded shadow"
+                     style="max-width:900px; width:100%; height:auto;">
+
+            </div>
+        }
+        ]
+        <h4 class="text-danger">
+            @Model.GiaThue.ToString("N0") đ / tháng
+        </h4>
+
+        <p><strong>Diện tích:</strong> @Model.DienTich m²</p>
+        <p><strong>Địa chỉ:</strong> @Model.DiaChi</p>
+        <p><strong>Ngày đăng:</strong> @Model.NgayDang.ToString("dd/MM/yyyy")</p>
+
+        <br />
+
+        <a asp-action="Edit"
+               asp-route-id="@Model.MaPhong"
+               class="btn btn-primary">
+            Sửa
+        </a>
+
+        <a asp-action="Delete"
+               asp-route-id="@Model.MaPhong"
+               class="btn btn-danger">
+            Xóa
+        </a>
+
+        <a asp-action="Index"
+               class="btn btn-secondary">
+            Quay lại
+        </a>
+    </div>
+</div>

@@ -1,0 +1,111 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+    var currentSort = Context.Request.Query["sortOrder"].ToString();
+    var currentArea = Context.Request.Query["dientich"].ToString();
+}
+@model List<PHONGTROOA.Models.Phong>
+
+<section class="hero">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 text-white">
+                <h1 class="fw-bold mb-3">TÌM NHANH, KIẾM DỄ<br />TRỌ MỚI TOÀN QUỐC</h1>
+              
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<form method="get" asp-controller="Room" asp-action="Index">
+
+    <div class="container">
+        <div class="search-box">
+            <div class="row mb-3">
+
+                <div class="col-md-6">
+                    <input name="keyword"
+                           class="form-control"
+                           placeholder="Bạn muốn tìm trọ ở đâu?" />
+                </div>
+
+                <div class="col-md-3">
+                    <select name="sortOrder"
+                            class="form-select">
+
+                        <option value="newest">
+                            Mới nhất
+                        </option>
+
+                        <option value="price_asc">
+                            Giá tăng dần
+                        </option>
+
+                        <option value="price_desc">
+                            Giá giảm dần
+                        </option>
+
+                    </select>
+                </div>
+
+                <div class="col-md-3 d-grid">
+                    <button type="submit" class="btn btn-warning">
+                        🔍 Tìm kiếm
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</form>
+<div class="container mt-4">
+    
+    <h3 class="fw-bold mb-4 text-primary">PHÒNG ĐƯỢC ĐỀ XUẤT</h3>
+    
+   <div class="row g-4 mb-4">
+  
+    @foreach (var room in Model)
+    {
+        <div class="col-lg-3 col-md-4 col-sm-6">
+            <div class="card h-100 shadow-sm">
+
+                <div class="position-relative">
+
+                        <img src="@Url.Content(room.HinhAnh)"
+                             class="card-img-top"
+                             style="height:200px; object-fit:cover;">
+
+                </div>
+
+                <div class="card-body">
+
+                    <h6 class="card-title">
+                           
+                                @room.TenPhong
+                         
+                    </h6>
+
+                    <p class="text-danger fw-bold mb-1">
+                             Từ @room.GiaThue.ToString("N0") đ/tháng
+                    </p>
+
+                    <p class="text-muted mb-1">
+                        Phòng · @room.DienTich m²
+                    </p>
+
+                    <p class="text-muted mb-0">
+                        <i class="bi bi-geo-alt"></i> @room.DiaChi
+                    </p>
+                        <a asp-controller="Room"
+                               asp-action="ChiTiet"
+                               asp-route-id="@room.MaPhong"
+                               class="btn btn-primary btn-sm w-100">
+                            Xem chi tiết
+                        </a>
+                </div>
+            </div>
+        </div>
+    }
+  </div>
+ </div>

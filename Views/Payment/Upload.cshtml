@@ -1,0 +1,84 @@
+﻿@model PHONGTROOA.Models.Payment
+
+<div class="container mt-5">
+
+    <div class="card shadow p-4">
+
+        <h2 class="text-center mb-4">💳 Thanh toán</h2>
+
+        <!-- 🟢 QR -->
+        <div class="text-center">
+            <h5>Quét QR để chuyển tiền</h5>
+
+            <img src="https://img.vietqr.io/image/970436-123456789-compact2.png?amount=@ViewBag.Amount&addInfo=Booking-@ViewBag.BookingId"
+                 style="width:280px; border-radius:10px;" />
+
+            <p class="mt-3">
+                Số tiền:
+                <b class="text-danger fs-4">
+                    @ViewBag.Amount.ToString("N0") đ
+                </b>
+            </p>
+        </div>
+
+        <hr />
+
+        <!-- 🟡 ขั้นตอน -->
+        <div class="mb-3">
+            <h6>📌 Hướng dẫn:</h6>
+            <ul>
+                <li>1. Quét QR bằng app ngân hàng</li>
+                <li>2. Kiểm tra số tiền</li>
+                <li>3. Chuyển tiền</li>
+                <li>4. Upload hóa đơn</li>
+            </ul>
+        </div>
+
+        <!-- ⏰ Countdown -->
+        <div class="text-center mb-3">
+            <span class="text-warning">
+                ⏰ Còn <span id="time">30:00</span> để thanh toán
+            </span>
+        </div>
+
+        <hr />
+
+        <!-- 🟢 Upload Slip -->
+        <form asp-action="Upload" method="post" enctype="multipart/form-data">
+
+            <input type="hidden" name="BookingId" value="@ViewBag.BookingId" />
+
+            <label class="form-label">Upload hóa đơn:</label>
+            <input type="file" name="SlipFile" class="form-control" required />
+
+            <br />
+
+            <button class="btn btn-primary w-100">
+                ✔ Tôi đã chuyển tiền
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+<!-- ⏰ Script countdown -->
+<script>
+    var time = 30 * 60; // 30 นาที
+
+    var timer = setInterval(function () {
+        var minutes = Math.floor(time / 60);
+        var seconds = time % 60;
+
+        document.getElementById("time").innerHTML =
+            minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
+
+        time--;
+
+        if (time < 0) {
+            clearInterval(timer);
+            document.getElementById("time").innerHTML = "Hết hạn!";
+        }
+    }, 1000);
+</script>

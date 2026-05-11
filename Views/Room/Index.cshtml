@@ -1,0 +1,170 @@
+﻿@model List<PHONGTROOA.Models.Phong>      
+
+@{
+    var currentSort = Context.Request.Query["sortOrder"].ToString();
+    var currentArea = Context.Request.Query["dientich"].ToString();
+}
+<br />
+<br />
+<br />
+
+<form method="get">
+
+<div class="row">
+
+<!-- ================= LEFT ================= -->
+<div class="col-md-8">
+
+
+
+    <!-- SEARCH + SORT -->
+    <div class="row mb-3">
+
+        <div class="col-md-6">
+            <input name="keyword"
+                   class="form-control"
+                   placeholder="Bạn muốn tìm trọ ở đâu?" />
+        </div>
+
+        <div class="col-md-3">
+            <select name="sortOrder"
+                    class="form-select"
+                    onchange="this.form.submit()">
+
+                <option value="newest"
+                        selected="@(currentSort==""||currentSort=="newest")">
+                    Mới nhất
+                </option>
+
+                <option value="price_asc"
+                        selected="@(currentSort=="price_asc")">
+                    Giá tăng dần
+                </option>
+
+                <option value="price_desc"
+                        selected="@(currentSort=="price_desc")">
+                    Giá giảm dần
+                </option>
+
+            </select>
+        </div>
+
+        <div class="col-md-3 d-grid">
+            <button class="btn btn-warning">
+                🔍 Tìm kiếm
+            </button>
+        </div>
+
+    </div>
+        
+         
+    <!-- DANH SÁCH PHÒNG -->
+    <div class="row g-3">
+
+        @foreach (var phong in Model)
+        {
+            <div class="col-12">
+                <div class="card shadow-sm">
+
+                    <div class="row g-0">
+
+                        <div class="col-md-4">
+                                    @if (!string.IsNullOrEmpty(phong.HinhAnh))
+                                    {
+                                        <img src="@phong.HinhAnh"
+                                             class="img-fluid w-100 h-100"
+                                             style="object-fit:cover;min-height:200px;">
+                                    }
+                                    else
+                                    {
+                                        <img src="/images/no-image.png"
+                                             class="img-fluid w-100 h-100"
+                                             style="object-fit:cover;min-height:200px;">
+                                    }
+                        </div>
+
+                        <div class="col-md-8">
+                                    <div class="card-body d-flex flex-column h-100">
+
+                                <h5>
+                                        @phong.TenPhong
+                                </h5>
+
+                                        <p class="text-warning fw-bold fs-5">
+                                    Từ @phong.GiaThue.ToString("N0") đ/tháng
+                                </p>
+
+                                        <p class="fs-5">📐 @phong.DienTich m²</p>
+                                        <p class="fs-5">📍 @phong.DiaChi</p>
+                                      
+                                        <div class="mt-auto text-end">
+                                            <a asp-action="ChiTiet"
+                                                   asp-route-id="@phong.MaPhong"
+                                                   class="btn btn-primary btn-lg ">
+                                                Xem chi tiết
+                                            </a>
+                                        </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        }
+
+    </div>
+
+</div>
+
+<!-- ================= RIGHT FILTER ================= -->
+<div class="col-md-4">
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+
+            <h5>🔍 Lọc tìm kiếm</h5>
+
+            <!-- DIỆN TÍCH -->
+            <label class="fw-bold">Diện tích</label>
+
+            <div class="form-check">
+                <input type="radio" name="dientich" value="1"
+                       checked="@(currentArea=="1")">
+                <label>Dưới 20 m²</label>
+            </div>
+
+            <div class="form-check">
+                <input type="radio" name="dientich" value="2"
+                       checked="@(currentArea=="2")">
+                <label>20 - 40 m²</label>
+            </div>
+
+            <div class="form-check">
+                <input type="radio" name="dientich" value="3"
+                       checked="@(currentArea=="3")">
+                <label>40 - 60 m²</label>
+            </div>
+
+            <div class="form-check">
+                <input type="radio" name="dientich" value="4"
+                       checked="@(currentArea=="4")">
+                <label>Trên 60 m²</label>
+            </div>
+
+            <br />
+
+            <button class="btn btn-primary w-100">
+                Áp dụng lọc
+            </button>
+
+        </div>
+    </div>
+
+</div>
+
+
+</div>
+</form>
+
+   

@@ -1,0 +1,15 @@
+﻿@model PHONGTROOA.Models.Booking
+<div class="container mt-4 py-5">
+
+<h2>Đặt phòng</h2>
+
+<form asp-action="Create" method="post">
+
+    <input type="hidden" asp-for="PhongId" value="@ViewBag.RoomId" />
+
+    <button type="submit" class="btn btn-primary">
+        Đặt phòng
+    </button>
+
+</form>
+</div>

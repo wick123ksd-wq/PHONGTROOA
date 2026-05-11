@@ -1,0 +1,12 @@
+﻿@model PHONGTROOA.Models.Payment
+
+<h2>Slip</h2>
+
+@if (Model?.SlipImage != null)
+{
+    <img src="@Model.SlipImage" width="300" />
+}
+else
+{
+    <p>No image</p>
+}

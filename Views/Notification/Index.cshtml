@@ -1,0 +1,55 @@
+﻿@model IEnumerable<PHONGTROOA.Models.Notification>
+
+<div class="container mt-4 py-5">
+
+    <h2 class="fw-bold mb-4">
+        🔔 Notifications
+    </h2>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-light">
+            Không có thông báo nào
+        </div>
+    }
+
+    @foreach (var n in Model)
+    {
+        <div class="card shadow-sm border-0 rounded-4 mb-3">
+
+            <div class="card-body">
+
+                <div class="d-flex justify-content-between align-items-center">
+
+                    <div>
+
+                        <h5 class="text-dark mb-2">
+                            @n.Message
+                        </h5>
+
+                        <small class="text-muted">
+                            @n.CreatedAt.ToString("dd/MM/yyyy HH:mm")
+                        </small>
+
+                    </div>
+
+                    <div>
+
+                        <a asp-controller="Booking"
+                           asp-action="Detail"
+                           asp-route-id="@n.BookingId"
+                           class="btn btn-primary btn-sm">
+
+                            Xem chi tiết
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    }
+
+</div>

@@ -1,0 +1,328 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+@using System.Security.Claims
+@inject PHONGTROOA.Data.ApplicationDbContext _context
+
+@{
+    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+    bool hasUnread = false;
+
+    if (userId != null)
+    {
+        hasUnread = _context.Notifications
+            .Any(n => n.UserId.ToString() == userId && !n.IsRead);
+    }
+}
+
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"] - TroMoi</title>
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1" />
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+          rel="stylesheet" />
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <link rel="stylesheet" href="~/css/site.css" />
+
+    <style>
+
+            body {
+                margin: 0;
+                overflow-x: hidden;
+                background: #f5f7fb;
+                font-family: Arial, sans-serif;
+            }
+
+            /* SIDEBAR */
+
+            .sidebar {
+                width: 250px;
+                height: 100vh;
+                background: white;
+                position: fixed;
+                left: 0;
+                top: 0;
+                border-right: 1px solid #eee;
+                padding: 20px;
+                overflow-y: auto;
+                z-index: 1000;
+            }
+
+            .sidebar-logo {
+                font-size: 32px;
+                font-weight: bold;
+                color: #2563eb;
+                margin-bottom: 40px;
+            }
+
+            .sidebar-menu a {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                padding: 14px 16px;
+                border-radius: 14px;
+                text-decoration: none;
+                color: #333;
+                margin-bottom: 10px;
+                transition: 0.3s;
+                font-weight: 500;
+            }
+
+                .sidebar-menu a:hover {
+                    background: #eff6ff;
+                    color: #2563eb;
+                }
+
+            /* MAIN CONTENT */
+
+            .main-content {
+                margin-left: 250px;
+                width: calc(100% - 250px);
+                min-height: 100vh;
+                padding: 30px;
+            }
+
+            /* USER BOX */
+
+            .gift-box {
+                background: linear-gradient(135deg,#dbeafe,#eff6ff);
+                border-radius: 20px;
+                padding: 20px;
+                margin-top: 40px;
+                text-align: center;
+            }
+
+            /* NOTIFICATION */
+
+            .notification-dot {
+                width: 10px;
+                height: 10px;
+                background: red;
+                border-radius: 50%;
+                display: inline-block;
+            }
+
+            /* RESPONSIVE */
+
+            @@media(max-width: 992px) {
+
+                .sidebar {
+                    width: 100%;
+                    height: auto;
+                    position: relative;
+                    border-right: none;
+                }
+
+                .main-content {
+                    margin-left: 0;
+                    width: 100%;
+                    padding: 20px;
+                }
+            }
+
+    </style>
+
+</head>
+
+<body>
+
+    @if (User.Identity.IsAuthenticated)
+    {
+        <!-- SIDEBAR -->
+
+        <div class="sidebar">
+
+            <div class="sidebar-logo">
+                <i class="bi bi-house-door-fill"></i>
+                TroMoi
+            </div>
+
+            <div class="sidebar-menu">
+
+                <a asp-controller="Home"
+                   asp-action="Index">
+
+                    <i class="bi bi-house"></i>
+                    Trang chủ
+                </a>
+
+                <a asp-controller="Room"
+                   asp-action="Index">
+
+                    <i class="bi bi-buildings"></i>
+                    Danh sách phòng
+                </a>
+
+                <a asp-controller="Cart"
+                   asp-action="Index">
+
+                    <i class="bi bi-cart3"></i>
+                    Giỏ hàng
+                </a>
+
+                <a asp-controller="Booking"
+                   asp-action="MyBookings">
+
+                    <i class="bi bi-calendar-check"></i>
+                    My Bookings
+                </a>
+
+                <a asp-controller="Notification"
+                   asp-action="Index"
+                   class="d-flex justify-content-between">
+
+                    <span>
+                        <i class="bi bi-bell"></i>
+                        Thông báo
+                    </span>
+
+                    @if (hasUnread)
+                    {
+                        <span class="notification-dot"></span>
+                    }
+
+                </a>
+
+                <a asp-controller="Account"
+                   asp-action="ChangePassword">
+
+                    <i class="bi bi-lock"></i>
+                    Đổi mật khẩu
+                </a>
+
+                <a asp-controller="Contact"
+                   asp-action="Index">
+
+                    <i class="bi bi-headset"></i>
+                    Liên hệ
+                </a>
+
+                @if (User.IsInRole("Admin"))
+                {
+                    <hr />
+
+                    <a asp-controller="Admin"
+                       asp-action="Dashboard">
+
+                        <i class="bi bi-speedometer2"></i>
+                        Dashboard
+                    </a>
+
+                    <a asp-controller="Admin"
+                       asp-action="Rooms">
+
+                        <i class="bi bi-building"></i>
+                        Quản lý phòng
+                    </a>
+
+                    <a asp-controller="Admin"
+                       asp-action="Bookings">
+
+                        <i class="bi bi-journal-check"></i>
+                        Quản lý booking
+                    </a>
+                }
+
+            </div>
+
+            <!-- USER BOX -->
+
+            <div class="gift-box">
+
+                <h1>👋</h1>
+
+                <h5>@User.Identity.Name</h5>
+
+                <p class="text-muted">
+                    Welcome back
+                </p>
+
+                <a class="btn btn-danger w-100"
+                   asp-controller="Account"
+                   asp-action="Logout">
+
+                    Đăng xuất
+                </a>
+
+            </div>
+
+        </div>
+    }
+    else
+    {
+        <!-- NAVBAR GUEST -->
+
+        <nav class="navbar navbar-expand-lg bg-white shadow-sm px-4">
+
+            <a class="navbar-brand fw-bold text-primary"
+               asp-controller="Home"
+               asp-action="Index">
+
+                PHÒNG TRỌ OA
+            </a>
+
+            <div class="ms-auto d-flex gap-2">
+
+                <a class="btn btn-outline-primary"
+                   asp-controller="Account"
+                   asp-action="Login">
+
+                    Đăng nhập
+                </a>
+
+                <a class="btn btn-primary"
+                   asp-controller="Account"
+                   asp-action="Register">
+
+                    Đăng ký
+                </a>
+
+            </div>
+
+        </nav>
+    }
+
+    <!-- MAIN CONTENT -->
+
+    <div class="@(User.Identity.IsAuthenticated
+                             ? "main-content"
+                             : "container-fluid px-4 mt-4")">
+
+        @RenderBody()
+
+    </div>
+
+    <!-- SWEET ALERT -->
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    @if (TempData["Error"] != null)
+    {
+        <script>
+            Swal.fire({
+            icon: 'error',
+            title: '❌ Error',
+            text: '@Html.Raw(TempData["Error"])'
+            });
+        </script>
+    }
+
+    @if (TempData["Success"] != null)
+    {
+        <script>
+            Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: '@Html.Raw(TempData["Success"])'
+            });
+        </script>
+    }
+
+</body>
+</html>

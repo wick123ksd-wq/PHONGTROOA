@@ -1,0 +1,33 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model PHONGTROOA.Models.Phong
+<div class="container mt-4 py-5">
+<h2>Xóa phòng</h2>
+
+<div class="alert alert-danger">
+    Bạn có chắc muốn xóa phòng này không?
+</div>
+
+<div class="card p-3">
+    <p><strong>Tên phòng:</strong> @Model.TenPhong</p>
+    <p><strong>Giá thuê:</strong> @Model.GiaThue.ToString("N0") đ</p>
+    <p><strong>Diện tích:</strong> @Model.DienTich m²</p>
+    <p><strong>Địa chỉ:</strong> @Model.DiaChi</p>
+
+    @if (!string.IsNullOrEmpty(Model.HinhAnh))
+    {
+        <img src="@Model.HinhAnh" width="200" />
+    }
+</div>
+
+<br />
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="MaPhong" />
+    <button type="submit" class="btn btn-danger">Xóa</button>
+    <a asp-action="Index" class="btn btn-secondary">Hủy</a>
+</form>
+</div>

@@ -1,0 +1,49 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model PHONGTROOA.Models.Phong
+<div class="container mt-4 py-5">
+<h2>Sửa phòng</h2>
+
+<form asp-action="Edit" method="post" enctype="multipart/form-data">
+    <input type="hidden" asp-for="MaPhong" />
+
+    <div class="mb-3">
+        <label>Tên phòng</label>
+        <input asp-for="TenPhong" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Giá thuê</label>
+        <input asp-for="GiaThue" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Diện tích</label>
+        <input asp-for="DienTich" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Địa chỉ</label>
+        <input asp-for="DiaChi" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Hình ảnh hiện tại</label><br />
+        @if (!string.IsNullOrEmpty(Model.HinhAnh))
+        {
+            <img src="@Model.HinhAnh" width="200" />
+        }
+    </div>
+
+    <div class="mb-3">
+        <label>Chọn hình mới</label>
+        <input asp-for="ImageFile" type="file" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Lưu</button>
+    <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+</form>
+</div>
